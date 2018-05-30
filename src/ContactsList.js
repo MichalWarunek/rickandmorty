@@ -2,6 +2,8 @@ import * as React from "react";
 import { ContactItem } from "./ContactItem";
 
 
+
+
 export class ContactsList extends React.Component {
 
   
@@ -13,14 +15,25 @@ export class ContactsList extends React.Component {
     return <ContactItem key={key} avatarUrl={avatarUrl} name={name} status={status} species={species}/>;
   };
 
+
+
  
   render() {
+  
+    const items = this.props.contacts.map(this.contactToContactItem)
+
+  
     return (
-    <div className="container">
+    <div className="conatiner">
     <div className="row">
-        {this.props.contacts.map(this.contactToContactItem)}
+      {items}
+      {/* {items.slice(0,6)} */}
+      {/* <Pages items={items}/> */}
+     
     </div>
     </div>
+  
+    
     );
   }
 }

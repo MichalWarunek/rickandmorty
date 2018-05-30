@@ -1,20 +1,36 @@
 import * as React from "react";
 import { ContactsList } from "./ContactsList";
 import { AppHeader } from "./AppHeader";
-import { Pages } from "./Pages";
 import { SelectList } from "./SelectList";
+import Pages from './Pages';
+
+
 
 export class App extends React.Component {
-  state = {
-    contacts: null
-  };
+  constructor(props) {
+    super(props);
+    
+    this.state = {
+    contacts: [],
 
-  componentDidMount() {
-    fetch("https://rickandmortyapi.com/api/character/")
-      .then(res => res.json())
-      .then(json => this.setState({ contacts: json.results }));
+  }
   }
 
+  loadContactsFromServer(){
+    fetch("https://rickandmortyapi.com/api/character/")
+      .then(res => res.json())
+      .then(json => this.setState({ contacts: json.results }))
+      .catch((error) => {
+        console.error(error);
+    });
+  }
+
+  componentDidMount() {
+    this.loadContactsFromServer();
+  }
+
+
+  
   render() {
     const contacts = this.state.contacts;
 
@@ -23,9 +39,12 @@ export class App extends React.Component {
         <AppHeader />
         <SelectList />
         <main className="ui main text container">
-          {contacts ? <ContactsList contacts={contacts} /> : 'Ładowanie…'}
-        </main>
-        <Pages />
+          {/* {contacts ? <ContactsList contacts={contacts} /> : 'Loading...'} */}
+        
+      <Pages contacts={contacts} /> 
+       
+      </main>
+     
       </div>
     );
   }
