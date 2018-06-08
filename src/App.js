@@ -1,9 +1,8 @@
 import * as React from "react";
-import { ContactsList } from "./ContactsList";
 import { AppHeader } from "./AppHeader";
 import { SelectList } from "./SelectList";
 import Pages from './Pages';
-
+ 
 
 
 export class App extends React.Component {
@@ -12,12 +11,15 @@ export class App extends React.Component {
     
     this.state = {
     contacts: [],
+    query: "https://rickandmortyapi.com/api/character/?page=2"
 
   }
   }
+
+
 
   loadContactsFromServer(){
-    fetch("https://rickandmortyapi.com/api/character/")
+    fetch(this.state.query)
       .then(res => res.json())
       .then(json => this.setState({ contacts: json.results }))
       .catch((error) => {
@@ -32,17 +34,18 @@ export class App extends React.Component {
 
   
   render() {
+ 
     const contacts = this.state.contacts;
 
     return (
       <div>
         <AppHeader />
-        <SelectList />
+        <SelectList contacts={contacts}/>
         <main className="ui main text container">
           {/* {contacts ? <ContactsList contacts={contacts} /> : 'Loading...'} */}
         
-      <Pages contacts={contacts} /> 
-       
+      <Pages  /> 
+           
       </main>
      
       </div>

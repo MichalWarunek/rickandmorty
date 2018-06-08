@@ -9,7 +9,8 @@
     "react-dom": "^16.4.0",
     "react-paginate": "^5.2.3",
     "react-scripts": "1.1.4",
-    "react-select": "^1.2.1"
+    "react-select": "^1.2.1",
+    "select2": "^4.0.6-rc.1"
   },
   "scripts": {
     "predeploy": "npm run build",

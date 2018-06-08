@@ -19,7 +19,7 @@ export class ContactsList extends React.Component {
 
  
   render() {
-  
+    
     const items = this.props.contacts.map(this.contactToContactItem)
 
   

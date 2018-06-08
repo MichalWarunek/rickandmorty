@@ -6,43 +6,56 @@ export class Pages extends React.Component {
     super(props);
     this.state = {
       characters: [],
-      currentPage: 1,
-      todosPerPage: 6,
+      page: 1,
+      numPages:[]
+
+   
     };
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  loadContactsFromServer(){
+    fetch(`https://rickandmortyapi.com/api/character/?page=${this.state.page}`)
+      .then(res => res.json())
+      .then(json => this.setState({ characters: json.results, numPages:json.info }))
+      .catch((error) => {
+        console.error(error);
+    });
+  }
+
+  componentDidMount() {
+    this.loadContactsFromServer();
   }
   
   handleClick(event) {
     this.setState({
-      currentPage: Number(event.target.id)
-   
+      page: Number(event.target.id)
     });
+    this.loadContactsFromServer();
   }
 
   increment=(event)=> {
-    if(this.state.currentPage < this.props.contacts.length / this.state.todosPerPage)
+    if(this.state.page < this.state.numPages.pages)
     this.setState({
-      currentPage: this.state.currentPage+1
-   
+      page: this.state.page+1,
     });
+    this.loadContactsFromServer();
   }
 
   decrement=(event)=> {
-    if (this.state.currentPage>1)
+    if (this.state.page>1)
     this.setState({
-       currentPage: this.state.currentPage-1,
+       page: this.state.page-1
     });
+    this.loadContactsFromServer();
   }
  
 
   render() {
-    const characters = this.props.contacts;
-    const { currentPage, todosPerPage } = this.state;
-    const indexOfLastTodo = currentPage * todosPerPage;
-    const indexOfFirstTodo = indexOfLastTodo - todosPerPage;
-    const currentTodos = characters.slice(indexOfFirstTodo, indexOfLastTodo);
+    const {pages} = this.state.numPages;
+    const characters = this.state.characters;
 
-    const renderTodos = currentTodos.map((character, index) => {
+    const renderTodos = characters.map((character, index) => {
       return <div className="col-md-2">
       <img src={character.image} className="img-thumbnail" alt="" />
       <div className="content">
@@ -56,7 +69,7 @@ export class Pages extends React.Component {
 
     // Logic for displaying page numbers
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(characters.length / todosPerPage); i++) {
+    for (let i = 1; i <= pages; i++) {
       pageNumbers.push(i);
     }
    
